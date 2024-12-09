@@ -9,11 +9,15 @@ import { formatCurrency } from "../utils/money.js";
 import {
   deliveryOptions,
   getDeliveryOption,
+  calculateDeliveryDate,
 } from "../../data/deliveryOption.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+import { renderPaySummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderSummary() {
   //import { cartQuantity } from "./amazon.js";
+  let dayString;
   let cartQuantity = 0;
   let cartItemHtml = "";
   cart.forEach((item) => {
@@ -23,9 +27,7 @@ export function renderSummary() {
 
     const deliveryOptionId = item.deliveryOptionId;
     const deliveryOption = getDeliveryOption(deliveryOptionId);
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDay, "days");
-    const dayString = deliveryDate.format("dddd, MMMM D");
+    dayString = calculateDeliveryDate(deliveryOption);
 
     cartItemHtml += `<div class="cart-item-container js-cart-item-container-${
       matchingProduct.id
@@ -83,9 +85,7 @@ export function renderSummary() {
   function delivery_option(matchingProduct, item) {
     let html = "";
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDay, "days");
-      const dayString = deliveryDate.format("dddd, MMMM D");
+      dayString = calculateDeliveryDate(deliveryOption);
       const priceString =
         deliveryOption.priceCents === 0
           ? "Free"
@@ -120,6 +120,8 @@ export function renderSummary() {
       );
       container.remove();
       returnLink.innerHTML = cartQuantity - quantity;
+      renderPaySummary();
+      renderCheckoutHeader();
     });
   });
 
@@ -132,8 +134,7 @@ export function renderSummary() {
       container.classList.add("is-editing-quantity");
     });
   });
-
-  saveQuantityUpdate();
+  /*
   function saveQuantityUpdate() {
     document.querySelectorAll(".save-quantity-link").forEach((link) => {
       const productId = link.dataset.productId;
@@ -149,6 +150,7 @@ export function renderSummary() {
         container.classList.remove("is-editing-quantity");
         let quantity = Number(quantityInput.value);
         quantityExchange(productId, quantity);
+        renderPaySummary();
       });
       // keydown event listener
       quantityInput.addEventListener("keydown", (event) => {
@@ -156,6 +158,7 @@ export function renderSummary() {
           let quantity = Number(quantityInput.value);
 
           quantityExchange(productId, quantity);
+          renderPaySummary();
         }
       });
     });
@@ -177,42 +180,17 @@ export function renderSummary() {
       alert("you can't update quantity");
     }
   }
+    */
 
-  /*document.querySelectorAll(".save-quantity-link").forEach((link) => {
-    link.addEventListener("click", () => {
-      const productId = link.dataset.productId;
-      const container = document.querySelector(`.product-quantity-${productId}`);
-      container.classList.remove("is-editing-quantity");
-      const quantityInput = document.querySelector(
-        `.quantity-input-${productId}`
-      );
-      let quantity = Number(quantityInput.value);
-      if (quantity >= 0 && quantity < 1000) {
-        document.querySelector(`.quantity-label-${productId}`).innerHTML =
-          quantity;
-  
-        updateQuantity(productId, quantity);
-  
-        let updatedCartQuantity = 0;
-        cart.forEach((item) => {
-          updatedCartQuantity += item.quantity;
-        });
-        cartQuantity = updatedCartQuantity;
-        returnLink.innerHTML = cartQuantity;
-      } else {
-        alert("you can't update quantity");
-      }
-    });
-  });*/
   const returnLink = document.querySelector(".js-return-link");
   returnLink.innerHTML = cartQuantity;
-  console.log(localStorage.getItem("cart"));
 
   document.querySelectorAll(".js-delivery-option").forEach((element) => {
     element.addEventListener("click", () => {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderSummary();
+      renderPaySummary();
     });
   });
 }
