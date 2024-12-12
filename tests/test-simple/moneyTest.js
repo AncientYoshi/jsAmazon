@@ -1,4 +1,4 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import { formatCurrency } from "../../scripts/utils/money.js";
 console.log("test suite: formatCurrency");
 console.log("test work with 0");
 if (formatCurrency(0) === "0.00") {
