@@ -46,6 +46,7 @@ export function cartCheckMark(productId, element) {
   // Save the new timeout ID for this product
   elementTimeouts[productId] = timeoutId;
 }
+/*
 export function addToCart(productId) {
   let matchingItem;
 
@@ -66,8 +67,8 @@ export function addToCart(productId) {
   }
 
   saveToStorage();
-}
-/*
+}*/
+
 export function addToCart(productId) {
   let x;
   const y = document.querySelector(`.js-quantity-selector-${productId}`).value;
@@ -89,7 +90,7 @@ export function addToCart(productId) {
     });
   }
   saveToStorage(cart);
-}*/
+}
 
 export function removeFromCart(productId) {
   let newCart = [];

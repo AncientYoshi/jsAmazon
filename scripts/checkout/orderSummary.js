@@ -29,7 +29,7 @@ export function renderSummary() {
     const deliveryOption = getDeliveryOption(deliveryOptionId);
     dayString = calculateDeliveryDate(deliveryOption);
 
-    cartItemHtml += `<div class="cart-item-container js-cart-item-container-${
+    cartItemHtml += `<div class="cart-item-container js-cart-item-container js-cart-item-container-${
       matchingProduct.id
     }">
               <div class="delivery-date">Delivery date: ${dayString}</div>
@@ -45,9 +45,11 @@ export function renderSummary() {
                     ${matchingProduct.name}
                   </div>
                   <div class="product-price">$${formatCurrency(
-                    matchingProduct.priceCents
+                    matchingProduct.priceCents //
                   )}</div>
-                  <div class="product-quantity-${matchingProduct.id}">
+                  <div class="product-quantity-${
+                    matchingProduct.id
+                  } js-product-quantity-${matchingProduct.id}">
                     <span> Quantity: <span class="quantity-label-${
                       matchingProduct.id
                     }">${item.quantity}</span> </span>
@@ -61,9 +63,11 @@ export function renderSummary() {
                     <span class="save-quantity-link link-primary" data-product-id=${
                       matchingProduct.id
                     }>Save</span>
-                    <span class="delete-quantity-link link-primary js-delete-link" data-quantity=${
-                      item.quantity
-                    } data-product-id=${matchingProduct.id}>
+                    <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${
+                      matchingProduct.id
+                    }" data-quantity=${item.quantity} data-product-id=${
+      matchingProduct.id
+    }>
                       Delete
                     </span>
                   </div>
@@ -108,8 +112,7 @@ export function renderSummary() {
     });
     return html;
   }
-
-  document.querySelector(".js-order-summary").innerHTML = cartItemHtml || "";
+  document.querySelector(".js-order-summary").innerHTML = cartItemHtml;
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;
