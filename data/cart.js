@@ -46,7 +46,7 @@ export function cartCheckMark(productId, element) {
   // Save the new timeout ID for this product
   elementTimeouts[productId] = timeoutId;
 }
-/*
+
 export function addToCart(productId) {
   let matchingItem;
 
@@ -67,8 +67,8 @@ export function addToCart(productId) {
   }
 
   saveToStorage();
-}*/
-
+}
+/*
 export function addToCart(productId) {
   let x;
   const y = document.querySelector(`.js-quantity-selector-${productId}`).value;
@@ -90,7 +90,7 @@ export function addToCart(productId) {
     });
   }
   saveToStorage(cart);
-}
+}*/
 
 export function removeFromCart(productId) {
   let newCart = [];
@@ -121,9 +121,23 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
 
   cart.forEach((item) => {
     if (productId === item.productId) {
-      cartItem = item; //imported for me if it opposite it doesn't work
+      cartItem = item;
+      if (deliveryOptionId === "1") {
+        cartItem.deliveryOptionId = deliveryOptionId;
+        saveToStorage();
+      } else if (deliveryOptionId === "2") {
+        cartItem.deliveryOptionId = deliveryOptionId;
+        saveToStorage();
+      } else if (deliveryOptionId === "3") {
+        cartItem.deliveryOptionId = deliveryOptionId;
+        saveToStorage();
+      } else {
+        return;
+      }
+
+      //important for me if it opposite it doesn't work
+    } else {
+      return;
     }
   });
-  cartItem.deliveryOptionId = deliveryOptionId;
-  saveToStorage();
 }

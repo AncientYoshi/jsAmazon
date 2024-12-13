@@ -41,12 +41,16 @@ export function renderSummary() {
                 />
   
                 <div class="cart-item-details">
-                  <div class="product-name">
+                  <div class="product-name js-product-name-${
+                    matchingProduct.id
+                  }">
                     ${matchingProduct.name}
                   </div>
-                  <div class="product-price">$${formatCurrency(
-                    matchingProduct.priceCents //
-                  )}</div>
+                  <div class="product-price js-product-price-${
+                    matchingProduct.id
+                  }">$${formatCurrency(
+      matchingProduct.priceCents //
+    )}</div>
                   <div class="product-quantity-${
                     matchingProduct.id
                   } js-product-quantity-${matchingProduct.id}">
@@ -95,13 +99,17 @@ export function renderSummary() {
           ? "Free"
           : `$${formatCurrency(deliveryOption.priceCents)}`;
       const ischecked = deliveryOption.id === item.deliveryOptionId;
-      html += `<div class="delivery-option js-delivery-option" data-product-id=${
+      html += `<div class="delivery-option js-delivery-option js-delivery-option-${
+        matchingProduct.id
+      }-${deliveryOption.id}" data-product-id=${
         matchingProduct.id
       } data-delivery-option-id=${deliveryOption.id}>
                     <input
                       type="radio"
                       ${ischecked ? "checked" : ""}
-                      class="delivery-option-input"
+                      class="delivery-option-input js-delivery-option-input-${
+                        matchingProduct.id
+                      }-${deliveryOption.id}"
                       name="delivery-option-${matchingProduct.id}"
                     />
                     <div>
